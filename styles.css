@@ -85,40 +85,53 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(5px);
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
 }
 
 .modal-content {
-  background: #fff;
+  background: #ffffff;
   padding: 40px;
-  border-radius: 16px;
+  border-radius: 20px;
   width: 90%;
-  max-width: 400px;
-  margin: 10% auto;
-  position: relative;
+  max-width: 420px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 .modal-content input,
 .modal-content textarea {
   width: 100%;
   margin: 10px 0;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.btn.full {
+  width: 100%;
+  margin-top: 20px;
 }
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 16px;
-  font-size: 22px;
+  top: 16px;
+  right: 18px;
+  font-size: 20px;
   cursor: pointer;
 }

@@ -29,18 +29,14 @@
 <!-- Invite Form Modal -->
 <div class="modal" id="inviteModal">
   <div class="modal-content">
+    <span class="close" onclick="closeForm()">×</span>
     <h2>Request Access</h2>
     <form>
       <input type="text" placeholder="Full Name" required>
       <input type="email" placeholder="Email Address" required>
       <input type="text" placeholder="Profession">
-      <textarea placeholder="Why should we grant you access?"></textarea>
-      <button type="submit" class="btn">Submit Application</button>
+      <textarea placeholder="Why should we grant you access?" rows="4"></textarea>
+      <button type="submit" class="btn full">Submit Application</button>
     </form>
-    <span class="close" onclick="closeForm()">×</span>
   </div>
 </div>
-
-<script src="script.js"></script>
-</body>
-</html>
