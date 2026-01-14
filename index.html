@@ -102,13 +102,32 @@ border-radius:10px;border:1px solid #ddd;font-size:14px
 <div class="close" onclick="closeForm()">×</div>
 <h2>Request Access</h2>
 
-<form action="https://formspree.io/f/mbddlrjq" method="POST">
-  <input type="hidden" name="_subject" value="New Royal Application">
+<form action="https://formsubmit.co/tvinayak744@gmail.com" method="POST">
+  
+  <!-- Auto Reply -->
+  <input type="hidden" name="_autoresponse" value="Your application has been received.
+
+Our selection process is selective and discreet.
+
+If your profile aligns with the standards of The Royals Club,
+you will receive an invitation.
+
+Until then, no further action is required.
+
+— The Royals Council">
+
+  <!-- Redirect to Home -->
   <input type="hidden" name="_next" value="https://theroyals.club">
+
+  <!-- Email Subject -->
+  <input type="hidden" name="_subject" value="New Application - The Royals Club">
+
+  <!-- Form Fields -->
   <input name="name" placeholder="Full Name" required>
   <input type="email" name="email" placeholder="Email Address" required>
   <input name="profession" placeholder="Profession">
   <textarea name="reason" placeholder="Why should we grant you access?"></textarea>
+
   <button class="btn" style="width:100%" type="submit">Submit Application</button>
 </form>
 
