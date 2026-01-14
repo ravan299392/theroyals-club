@@ -8,21 +8,39 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>The Royals Club</h1>
-    <p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-    <a href="#" class="btn">Request Invitation</a>
+<div class="container fade-in">
+  <h1>The Royals Club</h1>
+  <p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-    <div class="philosophy">
-      <span>Access over Noise</span>
-      <span>Intelligence over Hype</span>
-      <span>Legacy over Trends</span>
-    </div>
+  <button class="btn" onclick="openForm()">Request Invitation</button>
 
-    <footer>
-      © 2026 TheRoyals.Club
-    </footer>
+  <div class="philosophy">
+    <span class="slide">Access over Noise</span>
+    <span class="slide">Intelligence over Hype</span>
+    <span class="slide">Legacy over Trends</span>
   </div>
+
+  <footer>
+    © 2026 TheRoyals.Club
+  </footer>
+</div>
+
+<!-- Invite Form Modal -->
+<div class="modal" id="inviteModal">
+  <div class="modal-content">
+    <h2>Request Access</h2>
+    <form>
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address" required>
+      <input type="text" placeholder="Profession">
+      <textarea placeholder="Why should we grant you access?"></textarea>
+      <button type="submit" class="btn">Submit Application</button>
+    </form>
+    <span class="close" onclick="closeForm()">×</span>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
