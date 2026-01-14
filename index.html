@@ -1,45 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Royals Club</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<title>The Royals Club</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{
+background:#f7f7f7;color:#0a0a0a;height:100vh;
+display:flex;align-items:center;justify-content:center;
+overflow:hidden;
+}
+
+.container{
+text-align:center;
+max-width:700px;
+opacity:0;
+transform:translateY(30px);
+animation:pageEnter 1.3s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+h1{font-size:3.5rem;font-weight:500;letter-spacing:-1px}
+.tagline{margin-top:10px;font-size:1.1rem;color:#555}
+
+.btn{
+margin-top:40px;padding:14px 36px;border:1px solid #000;
+background:transparent;border-radius:30px;cursor:pointer;
+transition:all .4s cubic-bezier(.16,1,.3,1)
+}
+.btn:hover{
+background:#000;color:#fff;
+transform:translateY(-3px);
+box-shadow:0 12px 30px rgba(0,0,0,.15)
+}
+
+.philosophy{
+margin-top:60px;display:flex;gap:30px;
+justify-content:center;font-size:.9rem;color:#777
+}
+.philosophy span{
+opacity:0;transform:translateY(10px);
+animation:reveal 1s ease forwards
+}
+.philosophy span:nth-child(1){animation-delay:.5s}
+.philosophy span:nth-child(2){animation-delay:.8s}
+.philosophy span:nth-child(3){animation-delay:1.1s}
+
+footer{margin-top:80px;font-size:.75rem;color:#999}
+
+@keyframes pageEnter{to{opacity:1;transform:translateY(0)}}
+@keyframes reveal{to{opacity:1;transform:translateY(0)}}
+
+/* MODAL */
+.modal{
+position:fixed;inset:0;
+background:rgba(0,0,0,.35);
+backdrop-filter:blur(8px);
+display:flex;align-items:center;justify-content:center;
+opacity:0;pointer-events:none;
+transition:opacity .4s ease;
+}
+.modal.active{opacity:1;pointer-events:auto}
+
+.modal-box{
+background:#fff;padding:40px;border-radius:20px;
+width:90%;max-width:420px;text-align:center;
+transform:scale(.92);opacity:0;
+transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.modal.active .modal-box{transform:scale(1);opacity:1}
+
+.modal-box input,.modal-box textarea{
+width:100%;margin:10px 0;padding:12px 14px;
+border-radius:10px;border:1px solid #ddd;font-size:14px
+}
+.close{position:absolute;top:20px;right:22px;font-size:20px;cursor:pointer}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1>The Royals Club</h1>
-  <p class="tagline">Private Society for Wealth, Power & Legacy</p>
+<h1>The Royals Club</h1>
+<p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-  <button class="btn" onclick="openForm()">Request Invitation</button>
+<button class="btn" onclick="openForm()">Request Invitation</button>
 
-  <div class="philosophy">
-    <span class="slide">Access over Noise</span>
-    <span class="slide">Intelligence over Hype</span>
-    <span class="slide">Legacy over Trends</span>
-  </div>
-
-  <footer>
-    © 2026 TheRoyals.Club
-  </footer>
+<div class="philosophy">
+<span>Access over Noise</span>
+<span>Intelligence over Hype</span>
+<span>Legacy over Trends</span>
 </div>
 
-<div class="modal" id="inviteModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeForm()">×</span>
-    <h2>Request Access</h2>
-    <form>
-      <input type="text" placeholder="Full Name" required>
-      <input type="email" placeholder="Email Address" required>
-      <input type="text" placeholder="Profession">
-      <textarea placeholder="Why should we grant you access?" rows="4"></textarea>
-      <button type="submit" class="btn full">Submit Application</button>
-    </form>
-  </div>
+<footer>© 2026 TheRoyals.Club</footer>
 </div>
 
-<script src="script.js"></script>
+<div class="modal" id="modal">
+<div class="modal-box">
+<div class="close" onclick="closeForm()">×</div>
+<h2>Request Access</h2>
+<input placeholder="Full Name">
+<input placeholder="Email Address">
+<input placeholder="Profession">
+<textarea placeholder="Why should we grant you access?"></textarea>
+<button class="btn" style="width:100%">Submit Application</button>
+</div>
+</div>
+
+<script>
+function openForm(){
+document.getElementById("modal").classList.add("active");
+}
+function closeForm(){
+document.getElementById("modal").classList.remove("active");
+}
+</script>
+
 </body>
 </html>
