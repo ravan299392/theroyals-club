@@ -102,16 +102,14 @@ border-radius:10px;border:1px solid #ddd;font-size:14px
 <div class="close" onclick="closeForm()">×</div>
 <h2>Request Access</h2>
 
-<div id="formBox">
-  <input placeholder="Full Name" required>
-  <input type="email" placeholder="Email Address" required>
-  <input placeholder="Profession">
-  <textarea placeholder="Why should we grant you access?"></textarea>
+<form id="royalForm" action="https://formspree.io/f/mbddlrjq" method="POST">
+  <input type="text" name="name" placeholder="Full Name" required>
+  <input type="email" name="email" placeholder="Email Address" required>
+  <input type="text" name="profession" placeholder="Profession">
+  <textarea name="reason" placeholder="Why should we grant you access?"></textarea>
 
-  <button class="btn" style="width:100%" onclick="showReview()">
-    Submit Application
-  </button>
-</div>
+  <button class="btn" style="width:100%" type="submit">Submit Application</button>
+</form>
 
 <div id="reviewMessage" style="display:none;font-size:14px;line-height:1.6;">
   <strong>Application Under Review</strong><br><br>
@@ -130,10 +128,20 @@ document.getElementById("modal").classList.add("active");
 function closeForm(){
 document.getElementById("modal").classList.remove("active");
 }
-function showReview(){
-document.getElementById("formBox").style.display = "none";
-document.getElementById("reviewMessage").style.display = "block";
-}
+
+const form = document.getElementById("royalForm");
+form.addEventListener("submit", function(e){
+  e.preventDefault();
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: { "Accept": "application/json" }
+  }).then(() => {
+    form.style.display = "none";
+    document.getElementById("reviewMessage").style.display = "block";
+  });
+});
 </script>
 
 </body>
