@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard – The Royals Club</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{
+background:#f7f7f7;
+color:#0a0a0a;
+min-height:100vh;
+padding:60px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+h1{
+font-size:2.2rem;
+font-weight:500;
+}
+
+.rank{
+font-size:.9rem;
+color:#666;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.card{
+background:#fff;
+border-radius:20px;
+padding:30px;
+box-shadow:0 20px 60px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card h2{
+font-size:1.2rem;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:.9rem;
+color:#666;
+line-height:1.5;
+}
+
+.lock{
+opacity:.5;
+}
+
+.footer{
+margin-top:60px;
+font-size:.8rem;
+color:#888;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Welcome to The Royals Club</h1>
+  <div class="rank">Access Level: Noble</div>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h2>Capital</h2>
+    <p>Private market intelligence, wealth strategies and investment frameworks reserved for members.</p>
+  </div>
+
+  <div class="card">
+    <h2>Influence</h2>
+    <p>Geopolitical insights, power networks and strategic positioning briefings.</p>
+  </div>
+
+  <div class="card">
+    <h2>Legacy</h2>
+    <p>Long-term wealth preservation, dynasty planning and institutional thinking.</p>
+  </div>
+
+  <div class="card lock">
+    <h2>Inner Circle</h2>
+    <p>Restricted. Upgrade your rank to unlock private briefings and closed discussions.</p>
+  </div>
+
+  <div class="card lock">
+    <h2>Royal Briefings</h2>
+    <p>Weekly intelligence reports. Access will be granted soon.</p>
+  </div>
+
+  <div class="card lock">
+    <h2>Private Network</h2>
+    <p>Invitation-only community of selected members.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+© 2026 The Royals Club — Confidential Member Area
+</div>
+
+</body>
+</html>
