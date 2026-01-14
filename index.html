@@ -77,13 +77,6 @@ width:100%;margin:10px 0;padding:12px 14px;
 border-radius:10px;border:1px solid #ddd;font-size:14px
 }
 .close{position:absolute;top:20px;right:22px;font-size:20px;cursor:pointer}
-
-.success{
-display:none;
-font-size:14px;
-color:#111;
-margin-top:15px;
-}
 </style>
 </head>
 
@@ -109,17 +102,14 @@ margin-top:15px;
 <div class="close" onclick="closeForm()">×</div>
 <h2>Request Access</h2>
 
-<form action="https://formspree.io/f/mbddlrjq" method="POST" onsubmit="submitted()">
+<form action="https://formspree.io/f/mbddlrjq" method="POST">
+  <input type="hidden" name="_subject" value="New Royal Application">
   <input name="name" placeholder="Full Name" required>
   <input type="email" name="email" placeholder="Email Address" required>
   <input name="profession" placeholder="Profession">
   <textarea name="reason" placeholder="Why should we grant you access?"></textarea>
   <button class="btn" style="width:100%" type="submit">Submit Application</button>
 </form>
-
-<div class="success" id="successMsg">
-Application Received. Our Council will review your request.
-</div>
 
 </div>
 </div>
@@ -130,12 +120,6 @@ document.getElementById("modal").classList.add("active");
 }
 function closeForm(){
 document.getElementById("modal").classList.remove("active");
-}
-function submitted(){
-setTimeout(()=>{
-document.querySelector("form").style.display="none";
-document.getElementById("successMsg").style.display="block";
-},500);
 }
 </script>
 
