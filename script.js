@@ -1,7 +1,7 @@
 function openForm() {
-  document.getElementById("inviteModal").style.display = "block";
+  document.getElementById("inviteModal").classList.add("active");
 }
 
 function closeForm() {
-  document.getElementById("inviteModal").style.display = "none";
+  document.getElementById("inviteModal").classList.remove("active");
 }
