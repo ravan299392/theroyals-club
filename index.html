@@ -102,35 +102,23 @@ border-radius:10px;border:1px solid #ddd;font-size:14px
 <div class="close" onclick="closeForm()">×</div>
 <h2>Request Access</h2>
 
-<form action="https://royalsmailers.theroyalsclub.workers.dev/" method="POST">
+<div id="formBox">
+  <input placeholder="Full Name" required>
+  <input type="email" placeholder="Email Address" required>
+  <input placeholder="Profession">
+  <textarea placeholder="Why should we grant you access?"></textarea>
 
-  
-  <!-- Auto Reply -->
-  <input type="hidden" name="_autoresponse" value="Your application has been received.
+  <button class="btn" style="width:100%" onclick="showReview()">
+    Submit Application
+  </button>
+</div>
 
-Our selection process is selective and discreet.
-
-If your profile aligns with the standards of The Royals Club,
-you will receive an invitation.
-
-Until then, no further action is required.
-
-— The Royals Council">
-
-  <!-- Redirect to Home -->
-  <input type="hidden" name="_next" value="https://theroyals.club">
-
-  <!-- Email Subject -->
-  <input type="hidden" name="_subject" value="New Application - The Royals Club">
-
-  <!-- Form Fields -->
-  <input name="name" placeholder="Full Name" required>
-  <input type="email" name="email" placeholder="Email Address" required>
-  <input name="profession" placeholder="Profession">
-  <textarea name="reason" placeholder="Why should we grant you access?"></textarea>
-
-  <button class="btn" style="width:100%" type="submit">Submit Application</button>
-</form>
+<div id="reviewMessage" style="display:none;font-size:14px;line-height:1.6;">
+  <strong>Application Under Review</strong><br><br>
+  Our council is currently evaluating your profile.<br>
+  If your eligibility matches our criteria, you will be contacted by email.<br><br>
+  Please wait for further communication.
+</div>
 
 </div>
 </div>
@@ -141,6 +129,10 @@ document.getElementById("modal").classList.add("active");
 }
 function closeForm(){
 document.getElementById("modal").classList.remove("active");
+}
+function showReview(){
+document.getElementById("formBox").style.display = "none";
+document.getElementById("reviewMessage").style.display = "block";
 }
 </script>
 
