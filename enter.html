@@ -90,16 +90,19 @@ function verifyCode(){
   const codes = JSON.parse(localStorage.getItem("royalCodes") || "{}");
 
   if(codes[input]){
-    const tier = codes[input];
+    const tier = codes[input]; // CORE / PRIME / ELITE
     localStorage.setItem("memberTier", tier);
     localStorage.setItem("inviteCode", input);
-    window.location.href = "dashboard.html";
+
+    // YAHI CHANGE HAI
+    window.location.href = "membership.html";
   } else {
     document.getElementById("error").innerText = "Access Denied. Invalid or Unauthorized Code.";
     document.getElementById("error").style.display = "block";
   }
 }
 </script>
+
 
 
 </body>
