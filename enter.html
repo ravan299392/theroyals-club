@@ -87,23 +87,18 @@ display:none;
 <script>
 function verifyCode(){
   const input = document.getElementById("codeInput").value.trim().toUpperCase();
-  const codes = JSON.parse(localStorage.getItem("royalCodes") || "{}");
+  const db = JSON.parse(localStorage.getItem("royalDB") || "{}");
 
-  if(codes[input]){
-    const tier = codes[input]; // CORE / PRIME / ELITE
-    localStorage.setItem("memberTier", tier);
+  if(db[input] && db[input].status === "ACTIVE"){
+    localStorage.setItem("memberTier", db[input].tier);
     localStorage.setItem("inviteCode", input);
-
-    // YAHI CHANGE HAI
     window.location.href = "membership.html";
   } else {
-    document.getElementById("error").innerText = "Access Denied. Invalid or Unauthorized Code.";
+    document.getElementById("error").innerText = "Access Denied. Invalid or Revoked Code.";
     document.getElementById("error").style.display = "block";
   }
 }
 </script>
-
-
 
 </body>
 </html>
