@@ -2,100 +2,198 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel – The Royals Club</title>
+<title>Vault – The Royals Club</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:Inter;background:#f7f7f7;padding:60px}
-h1{font-weight:500;margin-bottom:20px}
-.panel{background:#fff;padding:30px;border-radius:16px;max-width:650px}
-select,button{padding:8px 12px;margin-top:8px;margin-right:6px}
-.code{margin-top:15px;font-weight:500;font-size:16px}
-.list{margin-top:25px;font-size:14px}
-.row{margin-bottom:8px}
-.revoke{background:#b00020;color:#fff;border:none}
+*{box-sizing:border-box;font-family:Inter}
+body{margin:0;background:#f7f7f7;color:#111;display:flex;height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:220px;
+  background:#fff;
+  border-right:1px solid #e5e5e5;
+  padding:30px 20px;
+}
+.sidebar h2{font-weight:500;margin-bottom:30px}
+.menu button{
+  display:block;width:100%;
+  background:none;border:none;
+  text-align:left;padding:10px;
+  margin-bottom:6px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.menu button.active, .menu button:hover{background:#efefef}
+
+/* Main Panel */
+.main{
+  flex:1;padding:40px;overflow:auto
+}
+.section{display:none}
+.section.active{display:block}
+
+.card{background:#fff;border-radius:14px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,.05);margin-bottom:20px}
+input,select,button{padding:8px 12px;margin-top:6px}
+button{cursor:pointer}
+
+/* Admin Lock */
+.lock{
+  position:fixed;inset:0;
+  background:#fff;display:flex;
+  align-items:center;justify-content:center;
+  z-index:9999;
+}
 </style>
 </head>
 
 <body>
 
-<script>
-const ADMIN_KEY = "VinayakTripathi@2007"; 
-const input = prompt("Enter Admin Access Key:");
+<div class="lock" id="lockScreen">
+  <div>
+    <h2>Vault Access</h2>
+    <input type="password" id="adminKey" placeholder="Enter Admin Key">
+    <br>
+    <button onclick="unlock()">Enter Vault</button>
+    <p id="lockError" style="color:red;display:none">Invalid Key</p>
+  </div>
+</div>
 
-if(input !== ADMIN_KEY){
-  document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter;">
-      <div style="text-align:center">
-        <h1>Access Denied</h1>
-        <p>This area is restricted.</p>
-      </div>
+<div class="sidebar">
+  <h2>Vault</h2>
+  <div class="menu">
+    <button class="active" onclick="show('codes')">Codes</button>
+    <button onclick="show('members')">Members</button>
+    <button onclick="show('content')">Content</button>
+    <button onclick="show('announcements')">Announcements</button>
+    <button onclick="show('settings')">Settings</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Codes -->
+  <div class="section active" id="codes">
+    <h3>Membership Codes</h3>
+    <div class="card">
+      <select id="tier">
+        <option value="CORE">Core</option>
+        <option value="PRIME">Prime</option>
+        <option value="ELITE">Elite</option>
+      </select>
+      <button onclick="generateCode()">Generate Code</button>
+      <p id="generatedCode"></p>
     </div>
-  `;
-  throw new Error("Unauthorized Access");
-}
-</script>
+    <div class="card" id="codeList"></div>
+  </div>
 
-<h1>Admin Panel – Membership Control</h1>
+  <!-- Members -->
+  <div class="section" id="members">
+    <h3>Members Control</h3>
+    <div class="card">
+      <p>Search by code, upgrade, revoke (same as Codes section for now)</p>
+    </div>
+  </div>
 
-<div class="panel">
-  <label>Generate New Code:</label><br>
-  <select id="tier">
-    <option value="CORE">Core</option>
-    <option value="PRIME">Prime</option>
-    <option value="ELITE">Elite</option>
-  </select>
-  <button onclick="generateCode()">Generate</button>
+  <!-- Content -->
+  <div class="section" id="content">
+    <h3>Content Control</h3>
+    <div class="card">
+      <textarea id="capitalText" rows="4" style="width:100%">Capital Page Content</textarea>
+      <button onclick="saveContent()">Save Capital</button>
+    </div>
+  </div>
 
-  <div class="code" id="generatedCode"></div>
-  <div class="list" id="codeList"></div>
+  <!-- Announcements -->
+  <div class="section" id="announcements">
+    <h3>Global Announcement</h3>
+    <div class="card">
+      <input id="notice" placeholder="Write message for all members" style="width:100%">
+      <button onclick="pushNotice()">Push</button>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="section" id="settings">
+    <h3>Settings</h3>
+    <div class="card">
+      <p>Admin Key, Maintenance Mode, Payment Setup (coming soon)</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
+const MASTER_KEY = "VinayakTripathi@2007";
+
+function unlock(){
+  const key = document.getElementById("adminKey").value;
+  if(key === MASTER_KEY){
+    document.getElementById("lockScreen").style.display = "none";
+  } else {
+    document.getElementById("lockError").style.display = "block";
+  }
+}
+
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* Membership DB */
 let db = JSON.parse(localStorage.getItem("royalDB") || "{}");
 
 function generateCode(){
   const tier = document.getElementById("tier").value;
-  const random = Math.random().toString(36).substring(2,8).toUpperCase();
-  const code = tier + "-" + random;
-
-  db[code] = { tier: tier, status: "ACTIVE" };
+  const code = tier + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
+  db[code] = { tier, status:"ACTIVE" };
   localStorage.setItem("royalDB", JSON.stringify(db));
-
   document.getElementById("generatedCode").innerText = "New Code: " + code;
-  renderList();
+  renderCodes();
 }
 
 function revoke(code){
   db[code].status = "REVOKED";
   localStorage.setItem("royalDB", JSON.stringify(db));
-  renderList();
+  renderCodes();
 }
 
-function upgrade(code,newTier){
-  db[code].tier = newTier;
+function upgrade(code,tier){
+  db[code].tier = tier;
   localStorage.setItem("royalDB", JSON.stringify(db));
-  renderList();
+  renderCodes();
 }
 
-function renderList(){
-  let html = "<b>All Membership Keys:</b><br><br>";
+function renderCodes(){
+  let html = "<h4>All Codes</h4>";
   for(let c in db){
     html += `
-      <div class="row">
-        <b>${c}</b> → ${db[c].tier} (${db[c].status})
-        <button onclick="upgrade('${c}','CORE')">Core</button>
-        <button onclick="upgrade('${c}','PRIME')">Prime</button>
-        <button onclick="upgrade('${c}','ELITE')">Elite</button>
-        <button class="revoke" onclick="revoke('${c}')">Revoke</button>
-      </div>
+      <p><b>${c}</b> → ${db[c].tier} (${db[c].status})
+      <button onclick="upgrade('${c}','CORE')">Core</button>
+      <button onclick="upgrade('${c}','PRIME')">Prime</button>
+      <button onclick="upgrade('${c}','ELITE')">Elite</button>
+      <button onclick="revoke('${c}')">Revoke</button></p>
     `;
   }
   document.getElementById("codeList").innerHTML = html;
 }
+renderCodes();
 
-renderList();
+/* Content Control */
+function saveContent(){
+  localStorage.setItem("capitalContent", document.getElementById("capitalText").value);
+  alert("Capital content saved.");
+}
+
+/* Announcement */
+function pushNotice(){
+  localStorage.setItem("globalNotice", document.getElementById("notice").value);
+  alert("Announcement pushed to dashboard.");
+}
 </script>
 
 </body>
