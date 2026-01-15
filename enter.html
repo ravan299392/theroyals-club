@@ -87,16 +87,16 @@ display:none;
 <script>
 function verifyCode(){
   const code = document.getElementById("codeInput").value.trim().toUpperCase();
-  let rank = null;
+  let tier = null;
 
-  if(code.startsWith("NOBLE-")) rank = "Noble";
-  if(code.startsWith("DUKE-")) rank = "Duke";
-  if(code.startsWith("KING-")) rank = "King";
+  if(code.startsWith("CORE-")) tier = "Core";
+  if(code.startsWith("PRIME-")) tier = "Prime";
+  if(code.startsWith("ELITE-")) tier = "Elite";
 
-  if(rank){
-    localStorage.setItem("memberRank", rank);
+  if(tier){
+    localStorage.setItem("memberTier", tier);
     localStorage.setItem("inviteCode", code);
-    window.location.href = "dashboard.html";
+    window.location.href = "membership.html";
   } else {
     document.getElementById("error").style.display = "block";
   }

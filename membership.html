@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Choose Membership – The Royals Club</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+body{background:#f7f7f7;font-family:Inter;display:flex;align-items:center;justify-content:center;height:100vh}
+.box{max-width:900px;text-align:center}
+h1{font-weight:500;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;padding:30px;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.08)}
+button{margin-top:15px;padding:10px 22px;border-radius:20px;border:1px solid #000;background:transparent;cursor:pointer}
+button:hover{background:#000;color:#fff}
+</style>
+</head>
+
+<body>
+<div class="box">
+<h1>Select Your Membership</h1>
+
+<div class="grid">
+  <div class="card">
+    <h2>Core</h2>
+    <p>Essential access to the platform.</p>
+    <button onclick="selectTier('Core')">Choose Core</button>
+  </div>
+
+  <div class="card">
+    <h2>Prime</h2>
+    <p>Advanced access with premium insights.</p>
+    <button onclick="selectTier('Prime')">Choose Prime</button>
+  </div>
+
+  <div class="card">
+    <h2>Elite</h2>
+    <p>Top-tier inner circle privileges.</p>
+    <button onclick="selectTier('Elite')">Choose Elite</button>
+  </div>
+</div>
+</div>
+
+<script>
+function selectTier(tier){
+  localStorage.setItem("memberTier", tier);
+  window.location.href = "dashboard.html";
+}
+</script>
+</body>
+</html>
