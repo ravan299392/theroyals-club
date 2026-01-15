@@ -12,24 +12,26 @@ body{
 background:#f7f7f7;
 color:#0a0a0a;
 min-height:100vh;
-padding:60px;
+padding:50px;
 }
 
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:40px;
+margin-bottom:30px;
 }
 
-h1{
-font-size:2.2rem;
-font-weight:500;
-}
+h1{font-size:2.2rem;font-weight:500}
+.rank{font-size:.9rem;color:#666}
 
-.rank{
-font-size:.9rem;
-color:#666;
+.notice{
+background:#000;
+color:#fff;
+padding:12px 18px;
+border-radius:10px;
+margin-bottom:30px;
+display:none;
 }
 
 .grid{
@@ -47,31 +49,17 @@ transition:.3s;
 cursor:pointer;
 }
 
-.card:hover{
-transform:translateY(-6px);
-}
+.card:hover{transform:translateY(-6px)}
 
-.card h2{
-font-size:1.2rem;
-margin-bottom:10px;
-}
-
-.card p{
-font-size:.9rem;
-color:#666;
-line-height:1.5;
-}
+.card h2{font-size:1.2rem;margin-bottom:10px}
+.card p{font-size:.9rem;color:#666;line-height:1.5}
 
 .lock{
-opacity:.5;
-cursor:not-allowed;
+opacity:.4;
+pointer-events:none;
 }
 
-a{
-text-decoration:none;
-color:inherit;
-display:block;
-}
+a{text-decoration:none;color:inherit}
 
 .footer{
 margin-top:60px;
@@ -79,55 +67,61 @@ font-size:.8rem;
 color:#888;
 text-align:center;
 }
+
+.logout{
+border:1px solid #000;
+background:transparent;
+padding:8px 18px;
+border-radius:20px;
+cursor:pointer;
+}
+.logout:hover{background:#000;color:#fff}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h1>Welcome to The Royals Club</h1>
-  <div class="rank" id="rankText">Access Level: Noble</div>
+  <div>
+    <h1>Welcome to The Royals Club</h1>
+    <div class="rank" id="rankText"></div>
+  </div>
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
+
+<div class="notice" id="announcementBox"></div>
 
 <div class="grid">
 
-  <a href="capital.html">
-    <div class="card">
-      <h2>Capital</h2>
-      <p>Private market intelligence, wealth strategies and investment frameworks reserved for members.</p>
-    </div>
-  </a>
+  <a href="capital.html"><div class="card core">
+    <h2>Capital</h2>
+    <p>Private market intelligence, wealth strategies and investment frameworks.</p>
+  </div></a>
 
-  <a href="influence.html">
-    <div class="card">
-      <h2>Influence</h2>
-      <p>Geopolitical insights, power networks and strategic positioning briefings.</p>
-    </div>
-  </a>
+  <a href="influence.html"><div class="card core">
+    <h2>Influence</h2>
+    <p>Geopolitical insights, power networks and strategic positioning.</p>
+  </div></a>
 
-  <a href="legacy.html">
-    <div class="card">
-      <h2>Legacy</h2>
-      <p>Long-term wealth preservation, dynasty planning and institutional thinking.</p>
-    </div>
-  </a>
+  <a href="legacy.html"><div class="card core">
+    <h2>Legacy</h2>
+    <p>Long-term wealth preservation and dynasty planning.</p>
+  </div></a>
 
-  <div class="card lock inner-circle">
+  <a href="inner-circle.html"><div class="card elite lock" id="innerCircle">
     <h2>Inner Circle</h2>
-    <p>Restricted. Upgrade your rank to unlock private briefings and closed discussions.</p>
-  </div>
+    <p>Elite-only confidential chamber.</p>
+  </div></a>
 
-  <a href="briefing.html" class="briefing-card">
-    <div class="card">
-      <h2>Royal Briefings</h2>
-      <p>Open Royal Briefing #001 – Confidential intelligence for members.</p>
-    </div>
-  </a>
+  <a href="briefing.html"><div class="card prime lock" id="briefings">
+    <h2>Royal Briefings</h2>
+    <p>Prime & Elite intelligence briefings.</p>
+  </div></a>
 
-  <div class="card lock private-network">
+  <a href="network.html"><div class="card elite lock" id="network">
     <h2>Private Network</h2>
-    <p>Invitation-only community of selected members.</p>
-  </div>
+    <p>Elite-level private connections.</p>
+  </div></a>
 
 </div>
 
@@ -136,21 +130,33 @@ text-align:center;
 </div>
 
 <script>
-const rank = localStorage.getItem("memberRank") || "Noble";
-document.getElementById("rankText").innerText = "Access Level: " + rank;
+const tier = localStorage.getItem("memberTier");
+if(!tier){ window.location.href = "index.html"; }
 
-// Duke & King: Royal Briefings unlocked (already clickable)
-if(rank === "Duke" || rank === "King") {
-  document.querySelector(".briefing-card").classList.remove("lock");
+document.getElementById("rankText").innerText = "Access Level: " + tier;
+
+// Unlock based on tier
+if(tier === "PRIME" || tier === "ELITE"){
+  document.getElementById("briefings").classList.remove("lock");
+}
+if(tier === "ELITE"){
+  document.getElementById("innerCircle").classList.remove("lock");
+  document.getElementById("network").classList.remove("lock");
 }
 
-// King: Inner Circle unlocked
-if(rank === "King") {
-  const inner = document.querySelector(".inner-circle");
-  inner.classList.remove("lock");
-  inner.style.opacity = "1";
-  inner.style.cursor = "pointer";
-  inner.querySelector("p").innerText = "Welcome to the Inner Circle. Exclusive access granted.";
+// Announcement from Vault
+const notice = localStorage.getItem("globalNotice");
+if(notice){
+  const box = document.getElementById("announcementBox");
+  box.innerText = notice;
+  box.style.display = "block";
+}
+
+// Logout
+function logout(){
+  localStorage.removeItem("inviteCode");
+  localStorage.removeItem("memberTier");
+  window.location.href = "index.html";
 }
 </script>
 

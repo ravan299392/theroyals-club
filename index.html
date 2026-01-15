@@ -36,6 +36,11 @@ transform:translateY(-3px);
 box-shadow:0 12px 30px rgba(0,0,0,.15)
 }
 
+.btn.secondary{
+margin-left:15px;
+background:#000;color:#fff;
+}
+
 .philosophy{
 margin-top:60px;display:flex;gap:30px;
 justify-content:center;font-size:.9rem;color:#777
@@ -86,7 +91,10 @@ border-radius:10px;border:1px solid #ddd;font-size:14px
 <h1>The Royals Club</h1>
 <p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-<button class="btn" onclick="openForm()">Request Invitation</button>
+<div>
+  <button class="btn" onclick="openForm()">Request Invitation</button>
+  <button class="btn secondary" onclick="window.location.href='enter.html'">Member Login</button>
+</div>
 
 <div class="philosophy">
 <span>Access over Noise</span>
@@ -107,7 +115,6 @@ border-radius:10px;border:1px solid #ddd;font-size:14px
   <input type="email" name="email" placeholder="Email Address" required>
   <input type="text" name="profession" placeholder="Profession">
   <textarea name="reason" placeholder="Why should we grant you access?"></textarea>
-
   <button class="btn" style="width:100%" type="submit">Submit Application</button>
 </form>
 
@@ -142,6 +149,17 @@ form.addEventListener("submit", function(e){
     document.getElementById("reviewMessage").style.display = "block";
   });
 });
+
+/* Auto Welcome Back */
+window.onload = function(){
+  const code = localStorage.getItem("inviteCode");
+  const tier = localStorage.getItem("memberTier");
+  if(code && tier){
+    if(confirm("Welcome back.\nContinue as " + tier + " member?")){
+      window.location.href = "dashboard.html";
+    }
+  }
+}
 </script>
 
 </body>
