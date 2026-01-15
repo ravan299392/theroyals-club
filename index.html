@@ -12,30 +12,44 @@ body{
 background:#f7f7f7;
 color:#0a0a0a;
 height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 overflow:hidden;
 }
 
-#canvas{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-z-index:1;
-}
-
 .container{
-position:relative;
-z-index:2;
 text-align:center;
 max-width:700px;
-margin:0 auto;
-top:65%;
-transform:translateY(-50%);
 opacity:0;
-animation:pageEnter 1.5s cubic-bezier(.16,1,.3,1) forwards;
-animation-delay:3.5s;
+transform:translateY(30px);
+animation:pageEnter 1.4s cubic-bezier(.16,1,.3,1) forwards;
+animation-delay:1.2s;
 }
 
-.tagline{margin-top:10px;font-size:1.1rem;color:#555}
+.logo{
+width:260px;
+margin:0 auto 20px;
+opacity:0;
+transform:scale(0.9);
+animation:logoReveal 1.8s ease forwards;
+animation-delay:0.3s;
+filter:drop-shadow(0 0 0 rgba(212,175,55,0));
+}
+
+@keyframes logoReveal{
+to{
+  opacity:1;
+  transform:scale(1);
+  filter:drop-shadow(0 0 25px rgba(212,175,55,0.6));
+}
+}
+
+.tagline{
+margin-top:10px;
+font-size:1.1rem;
+color:#555;
+}
 
 .btn{
 margin-top:40px;
@@ -47,7 +61,8 @@ cursor:pointer;
 transition:all .4s cubic-bezier(.16,1,.3,1)
 }
 .btn:hover{
-background:#000;color:#fff;
+background:#000;
+color:#fff;
 transform:translateY(-3px);
 box-shadow:0 12px 30px rgba(0,0,0,.15)
 }
@@ -66,9 +81,9 @@ opacity:0;
 transform:translateY(10px);
 animation:reveal 1s ease forwards
 }
-.philosophy span:nth-child(1){animation-delay:3.9s}
-.philosophy span:nth-child(2){animation-delay:4.2s}
-.philosophy span:nth-child(3){animation-delay:4.5s}
+.philosophy span:nth-child(1){animation-delay:1.6s}
+.philosophy span:nth-child(2){animation-delay:1.9s}
+.philosophy span:nth-child(3){animation-delay:2.2s}
 
 footer{
 margin-top:80px;
@@ -76,101 +91,36 @@ font-size:.75rem;
 color:#999
 }
 
-@keyframes pageEnter{to{opacity:1;transform:translateY(-50%)}}
+@keyframes pageEnter{to{opacity:1;transform:translateY(0)}}
 @keyframes reveal{to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 
 <body>
 
-<canvas id="canvas"></canvas>
-
 <div class="container">
-<p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-<div>
-  <button class="btn" onclick="openForm()">Request Invitation</button>
-  <button class="btn secondary" onclick="window.location.href='enter.html'">Member Login</button>
-</div>
+  <!-- BIG LOGO (No Text Now) -->
+  <img src="logo.png" class="logo">
 
-<div class="philosophy">
-<span>Access over Noise</span>
-<span>Intelligence over Hype</span>
-<span>Legacy over Trends</span>
-</div>
+  <p class="tagline">Private Society for Wealth, Power & Legacy</p>
 
-<footer>© 2026 TheRoyals.Club</footer>
+  <div>
+    <button class="btn" onclick="openForm()">Request Invitation</button>
+    <button class="btn secondary" onclick="window.location.href='enter.html'">Member Login</button>
+  </div>
+
+  <div class="philosophy">
+    <span>Access over Noise</span>
+    <span>Intelligence over Hype</span>
+    <span>Legacy over Trends</span>
+  </div>
+
+  <footer>© 2026 TheRoyals.Club</footer>
+
 </div>
 
 <script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let W = canvas.width = window.innerWidth;
-let H = canvas.height = window.innerHeight;
-
-window.onresize = ()=>{W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-
-const img = new Image();
-img.src = "logo.png";
-let particles = [];
-
-class Particle{
-  constructor(x,y){
-    this.tx=x; this.ty=y;
-    this.x=Math.random()*W;
-    this.y=Math.random()*H;
-    this.vx=0; this.vy=0;
-    this.alpha=0;
-    this.size=1.5;
-  }
-  update(){
-    this.vx+=(this.tx-this.x)*0.02;
-    this.vy+=(this.ty-this.y)*0.02;
-    this.vx*=0.85; this.vy*=0.85;
-    this.x+=this.vx; this.y+=this.vy;
-    if(this.alpha<1)this.alpha+=0.02;
-  }
-  draw(){
-    ctx.fillStyle=`rgba(212,175,55,${this.alpha})`;
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fill();
-  }
-}
-
-function build(){
-  const scale=Math.min(W/img.width,H/img.height)*0.45;
-  const iw=img.width*scale, ih=img.height*scale;
-  const ox=(W-iw)/2, oy=(H-ih)/2;
-  const t=document.createElement("canvas");
-  t.width=iw; t.height=ih;
-  const tctx=t.getContext("2d");
-  tctx.drawImage(img,0,0,iw,ih);
-  const d=tctx.getImageData(0,0,iw,ih).data;
-
-  for(let y=0;y<ih;y+=3){
-    for(let x=0;x<iw;x+=3){
-      if(d[(y*iw+x)*4+3]>150){
-        particles.push(new Particle(x+ox,y+oy));
-      }
-    }
-  }
-}
-
-function animate(){
-  ctx.clearRect(0,0,W,H);
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(animate);
-}
-
-setTimeout(()=>{
-  img.onload=()=>{
-    build();
-    animate();
-  };
-},1000);
-
-// Auto login check
 window.onload = function(){
   const code = localStorage.getItem("inviteCode");
   const tier = localStorage.getItem("memberTier");
