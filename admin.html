@@ -9,10 +9,12 @@
 <style>
 body{font-family:Inter;background:#f7f7f7;padding:60px}
 h1{font-weight:500;margin-bottom:20px}
-.panel{background:#fff;padding:30px;border-radius:16px;max-width:500px}
-select,button{padding:10px 14px;margin-top:10px}
-.code{margin-top:20px;font-weight:500;font-size:18px}
-.list{margin-top:30px;font-size:14px}
+.panel{background:#fff;padding:30px;border-radius:16px;max-width:650px}
+select,button{padding:8px 12px;margin-top:8px;margin-right:6px}
+.code{margin-top:15px;font-weight:500;font-size:16px}
+.list{margin-top:25px;font-size:14px}
+.row{margin-bottom:8px}
+.revoke{background:#b00020;color:#fff;border:none}
 </style>
 </head>
 
@@ -20,7 +22,6 @@ select,button{padding:10px 14px;margin-top:10px}
 
 <script>
 const ADMIN_KEY = "VinayakTripathi@2007"; 
-
 const input = prompt("Enter Admin Access Key:");
 
 if(input !== ADMIN_KEY){
@@ -36,42 +37,60 @@ if(input !== ADMIN_KEY){
 }
 </script>
 
-<h1>Admin Panel – Invite Code Generator</h1>
+<h1>Admin Panel – Membership Control</h1>
 
 <div class="panel">
-  <label>Choose Tier:</label><br>
+  <label>Generate New Code:</label><br>
   <select id="tier">
     <option value="CORE">Core</option>
     <option value="PRIME">Prime</option>
     <option value="ELITE">Elite</option>
-  </select><br>
-
-  <button onclick="generateCode()">Generate Code</button>
+  </select>
+  <button onclick="generateCode()">Generate</button>
 
   <div class="code" id="generatedCode"></div>
-
   <div class="list" id="codeList"></div>
 </div>
 
 <script>
-let codes = JSON.parse(localStorage.getItem("royalCodes") || "{}");
+let db = JSON.parse(localStorage.getItem("royalDB") || "{}");
 
 function generateCode(){
   const tier = document.getElementById("tier").value;
   const random = Math.random().toString(36).substring(2,8).toUpperCase();
   const code = tier + "-" + random;
 
-  codes[code] = tier;
-  localStorage.setItem("royalCodes", JSON.stringify(codes));
+  db[code] = { tier: tier, status: "ACTIVE" };
+  localStorage.setItem("royalDB", JSON.stringify(db));
 
   document.getElementById("generatedCode").innerText = "New Code: " + code;
   renderList();
 }
 
+function revoke(code){
+  db[code].status = "REVOKED";
+  localStorage.setItem("royalDB", JSON.stringify(db));
+  renderList();
+}
+
+function upgrade(code,newTier){
+  db[code].tier = newTier;
+  localStorage.setItem("royalDB", JSON.stringify(db));
+  renderList();
+}
+
 function renderList(){
-  let html = "<b>All Active Codes:</b><br>";
-  for(let c in codes){
-    html += c + " → " + codes[c] + "<br>";
+  let html = "<b>All Membership Keys:</b><br><br>";
+  for(let c in db){
+    html += `
+      <div class="row">
+        <b>${c}</b> → ${db[c].tier} (${db[c].status})
+        <button onclick="upgrade('${c}','CORE')">Core</button>
+        <button onclick="upgrade('${c}','PRIME')">Prime</button>
+        <button onclick="upgrade('${c}','ELITE')">Elite</button>
+        <button class="revoke" onclick="revoke('${c}')">Revoke</button>
+      </div>
+    `;
   }
   document.getElementById("codeList").innerHTML = html;
 }
