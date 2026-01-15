@@ -86,22 +86,21 @@ display:none;
 
 <script>
 function verifyCode(){
-  const code = document.getElementById("codeInput").value.trim().toUpperCase();
-  let tier = null;
+  const input = document.getElementById("codeInput").value.trim().toUpperCase();
+  const codes = JSON.parse(localStorage.getItem("royalCodes") || "{}");
 
-  if(code.startsWith("CORE-")) tier = "Core";
-  if(code.startsWith("PRIME-")) tier = "Prime";
-  if(code.startsWith("ELITE-")) tier = "Elite";
-
-  if(tier){
+  if(codes[input]){
+    const tier = codes[input];
     localStorage.setItem("memberTier", tier);
-    localStorage.setItem("inviteCode", code);
-    window.location.href = "membership.html";
+    localStorage.setItem("inviteCode", input);
+    window.location.href = "dashboard.html";
   } else {
+    document.getElementById("error").innerText = "Access Denied. Invalid or Unauthorized Code.";
     document.getElementById("error").style.display = "block";
   }
 }
 </script>
+
 
 </body>
 </html>
