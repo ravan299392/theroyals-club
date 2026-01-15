@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>The Royals Club — Intro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: radial-gradient(1200px 600px at 50% 40%, #1a1a1a, #0b0b0b 70%);
+  overflow: hidden;
+}
+canvas { display: block; }
+.logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  opacity: 0;
+  filter: drop-shadow(0 0 0 rgba(212,175,55,0));
+  animation: logoIn 2.2s ease 1.8s forwards;
+}
+@keyframes logoIn {
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 35px rgba(212,175,55,.9));
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<img src="logo.png" class="logo" />
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let w, h;
+function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+const particles = [];
+const count = 900;
+for(let i=0;i<count;i++){
+  particles.push({
+    x: Math.random()*w,
+    y: Math.random()*h,
+    vx: (Math.random()-0.5)*0.8,
+    vy: (Math.random()-0.5)*0.8,
+    a: Math.random()
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+  for(const p of particles){
+    p.x += p.vx;
+    p.y += p.vy;
+    if(p.x<0||p.x>w||p.y<0||p.y>h){
+      p.x=Math.random()*w; p.y=Math.random()*h;
+    }
+    ctx.fillStyle = "rgba(212,175,55,0.8)";
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,1.1,0,Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// Auto redirect after 5s
+setTimeout(() => {
+  window.location.href = "index.html";
+}, 5000);
+</script>
+
+</body>
+</html>
