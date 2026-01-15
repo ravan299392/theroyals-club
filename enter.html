@@ -85,16 +85,17 @@ display:none;
 </div>
 
 <script>
-const validCodes = [
-  "ROYAL-7X9A",
-  "ROYAL-KING-21",
-  "ROYAL-VAULT-01"
-];
-
 function verifyCode(){
   const code = document.getElementById("codeInput").value.trim().toUpperCase();
-  
-  if(validCodes.includes(code)){
+  let rank = null;
+
+  if(code.startsWith("NOBLE-")) rank = "Noble";
+  if(code.startsWith("DUKE-")) rank = "Duke";
+  if(code.startsWith("KING-")) rank = "King";
+
+  if(rank){
+    localStorage.setItem("memberRank", rank);
+    localStorage.setItem("inviteCode", code);
     window.location.href = "dashboard.html";
   } else {
     document.getElementById("error").style.display = "block";

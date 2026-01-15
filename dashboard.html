@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +86,7 @@ text-align:center;
 
 <div class="header">
   <h1>Welcome to The Royals Club</h1>
-  <div class="rank">Access Level: Noble</div>
+  <div class="rank" id="rankText">Access Level: Noble</div>
 </div>
 
 <div class="grid">
@@ -113,19 +112,19 @@ text-align:center;
     </div>
   </a>
 
-  <div class="card lock">
+  <div class="card lock inner-circle">
     <h2>Inner Circle</h2>
     <p>Restricted. Upgrade your rank to unlock private briefings and closed discussions.</p>
   </div>
 
-  <a href="briefing.html">
+  <a href="briefing.html" class="briefing-card">
     <div class="card">
       <h2>Royal Briefings</h2>
       <p>Open Royal Briefing #001 – Confidential intelligence for members.</p>
     </div>
   </a>
 
-  <div class="card lock">
+  <div class="card lock private-network">
     <h2>Private Network</h2>
     <p>Invitation-only community of selected members.</p>
   </div>
@@ -135,6 +134,25 @@ text-align:center;
 <div class="footer">
 © 2026 The Royals Club — Confidential Member Area
 </div>
+
+<script>
+const rank = localStorage.getItem("memberRank") || "Noble";
+document.getElementById("rankText").innerText = "Access Level: " + rank;
+
+// Duke & King: Royal Briefings unlocked (already clickable)
+if(rank === "Duke" || rank === "King") {
+  document.querySelector(".briefing-card").classList.remove("lock");
+}
+
+// King: Inner Circle unlocked
+if(rank === "King") {
+  const inner = document.querySelector(".inner-circle");
+  inner.classList.remove("lock");
+  inner.style.opacity = "1";
+  inner.style.cursor = "pointer";
+  inner.querySelector("p").innerText = "Welcome to the Inner Circle. Exclusive access granted.";
+}
+</script>
 
 </body>
 </html>
