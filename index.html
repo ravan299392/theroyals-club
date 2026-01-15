@@ -93,6 +93,47 @@ color:#999
 
 @keyframes pageEnter{to{opacity:1;transform:translateY(0)}}
 @keyframes reveal{to{opacity:1;transform:translateY(0)}}
+
+/* MODAL */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.35);
+backdrop-filter:blur(8px);
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:0;
+pointer-events:none;
+transition:.4s;
+z-index:99;
+}
+.modal.active{opacity:1;pointer-events:auto}
+
+.modal-box{
+background:#fff;
+padding:40px;
+border-radius:20px;
+width:90%;
+max-width:420px;
+text-align:center;
+position:relative;
+}
+.modal-box input,.modal-box textarea{
+width:100%;
+margin:10px 0;
+padding:12px 14px;
+border-radius:10px;
+border:1px solid #ddd;
+font-size:14px;
+}
+.close{
+position:absolute;
+top:16px;
+right:18px;
+font-size:20px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -100,7 +141,6 @@ color:#999
 
 <div class="container">
 
-  <!-- BIG LOGO (No Text Now) -->
   <img src="logo.png" class="logo">
 
   <p class="tagline">Private Society for Wealth, Power & Legacy</p>
@@ -120,7 +160,30 @@ color:#999
 
 </div>
 
+<!-- Invitation Modal -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="close" onclick="closeForm()">×</div>
+    <h2>Request Access</h2>
+
+    <form>
+      <input placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address" required>
+      <input placeholder="Profession">
+      <textarea placeholder="Why should we grant you access?"></textarea>
+      <button class="btn" style="width:100%" type="submit">Submit Application</button>
+    </form>
+  </div>
+</div>
+
 <script>
+function openForm(){
+  document.getElementById("modal").classList.add("active");
+}
+function closeForm(){
+  document.getElementById("modal").classList.remove("active");
+}
+
 window.onload = function(){
   const code = localStorage.getItem("inviteCode");
   const tier = localStorage.getItem("memberTier");
