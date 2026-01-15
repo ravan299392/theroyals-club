@@ -18,6 +18,24 @@ select,button{padding:10px 14px;margin-top:10px}
 
 <body>
 
+<script>
+const ADMIN_KEY = "VinayakTripathi@2007"; 
+
+const input = prompt("Enter Admin Access Key:");
+
+if(input !== ADMIN_KEY){
+  document.body.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter;">
+      <div style="text-align:center">
+        <h1>Access Denied</h1>
+        <p>This area is restricted.</p>
+      </div>
+    </div>
+  `;
+  throw new Error("Unauthorized Access");
+}
+</script>
+
 <h1>Admin Panel – Invite Code Generator</h1>
 
 <div class="panel">
