@@ -5,82 +5,25 @@
 <title>Core Club – The Royals Club</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
-body{
-  margin:0;
-  font-family:Inter, sans-serif;
-  background:#f7f7f7;
-  color:#111;
-}
-.wrapper{
-  max-width:1100px;
-  margin:0 auto;
-  padding:80px 40px;
-}
-h1{
-  font-weight:500;
-  font-size:2.6rem;
-}
-.sub{
-  color:#666;
-  margin-top:10px;
-}
-.badge{
-  display:inline-block;
-  margin-top:15px;
-  padding:6px 14px;
-  border-radius:20px;
-  background:#000;
-  color:#fff;
-  font-size:12px;
-}
-.grid{
-  margin-top:60px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:30px;
-}
-.card{
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
-}
-.card h3{
-  margin-bottom:10px;
-  font-weight:500;
-}
-.card p{
-  font-size:.9rem;
-  color:#555;
-  line-height:1.5;
-}
-.locked{
-  opacity:.5;
-}
-.locked span{
-  display:block;
-  margin-top:10px;
-  font-size:12px;
-  color:#000;
-}
-.footer{
-  margin-top:80px;
-  font-size:.8rem;
-  color:#777;
-  text-align:center;
-}
-.denied{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
+*{box-sizing:border-box;font-family:Inter, sans-serif}
+body{margin:0;background:#f7f7f7;color:#111}
+.header{max-width:1100px;margin:0 auto;padding:40px 40px 10px}
+h1{font-weight:500;font-size:2.2rem}
+.badge{display:inline-block;margin-top:8px;padding:6px 14px;border-radius:20px;background:#000;color:#fff;font-size:12px}
+.chat-wrap{max-width:1100px;margin:0 auto;padding:20px 40px 60px}
+.chat-box{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.08);padding:20px;height:420px;overflow-y:auto}
+.msg{margin-bottom:12px}
+.msg .user{font-weight:500;font-size:13px}
+.msg .text{font-size:14px;color:#333}
+.input-bar{display:flex;gap:10px;margin-top:15px}
+.input-bar input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid #ddd;font-size:14px}
+.input-bar button{padding:12px 22px;border-radius:20px;border:1px solid #000;background:transparent;cursor:pointer}
+.input-bar button:hover{background:#000;color:#fff}
+.denied{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
+.footer{text-align:center;color:#777;font-size:12px;margin-top:30px}
 </style>
 </head>
-
 <body>
 
 <div id="accessDenied" class="denied" style="display:none;">
@@ -91,57 +34,58 @@ h1{
 </div>
 
 <div id="coreContent" style="display:none;">
-  <div class="wrapper">
+  <div class="header">
     <h1>Core Club</h1>
-    <p class="sub">The First Gate of Royal Intelligence & Legacy</p>
-    <div class="badge">Tier: Core</div>
+    <div class="badge" id="tierBadge"></div>
+  </div>
 
-    <div class="grid">
-      <div class="card">
-        <h3>Royal Intelligence</h3>
-        <p>Foundational insights into power structures, elite thinking, and how influence is actually built.</p>
-      </div>
+  <div class="chat-wrap">
+    <div class="chat-box" id="chatBox"></div>
 
-      <div class="card">
-        <h3>Strategy & Positioning</h3>
-        <p>Frameworks used by top decision makers to position themselves in markets, politics, and society.</p>
-      </div>
-
-      <div class="card">
-        <h3>Wealth Foundations</h3>
-        <p>Understanding capital cycles, long-term asset building, and dynastic financial discipline.</p>
-      </div>
+    <div class="input-bar">
+      <input id="msgInput" placeholder="Type your message to the council...">
+      <button onclick="sendMsg()">Send</button>
     </div>
 
-    <div class="grid" style="margin-top:50px;">
-      <div class="card locked">
-        <h3>Prime Circle</h3>
-        <p>Advanced power networks, geopolitical intelligence, and inner influence maps.</p>
-        <span>Upgrade to unlock</span>
-      </div>
-
-      <div class="card locked">
-        <h3>Elite Council</h3>
-        <p>The inner throne room. Shadow strategies, legacy architecture, and sovereign thinking.</p>
-        <span>Invite only</span>
-      </div>
-    </div>
-
-    <div class="footer">
-      © 2026 The Royals Club — Core Club Chamber
-    </div>
+    <div class="footer">© 2026 The Royals Club — Core Club Chamber</div>
   </div>
 </div>
 
 <script>
 const tier = localStorage.getItem("memberTier");
-
 if(tier === "Core" || tier === "Prime" || tier === "Elite"){
   document.getElementById("coreContent").style.display = "block";
+  document.getElementById("tierBadge").innerText = "Tier: " + tier;
 } else {
   document.getElementById("accessDenied").style.display = "flex";
 }
-</script>
 
+// Simple local chat (prototype)
+let messages = JSON.parse(localStorage.getItem("coreChat") || "[]");
+const chatBox = document.getElementById("chatBox");
+
+function render(){
+  chatBox.innerHTML = "";
+  messages.forEach(m=>{
+    const div = document.createElement("div");
+    div.className = "msg";
+    div.innerHTML = `<div class="user">${m.user}</div><div class="text">${m.text}</div>`;
+    chatBox.appendChild(div);
+  });
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendMsg(){
+  const input = document.getElementById("msgInput");
+  const text = input.value.trim();
+  if(!text) return;
+  messages.push({user: tier + " Member", text});
+  localStorage.setItem("coreChat", JSON.stringify(messages));
+  input.value = "";
+  render();
+}
+
+render();
+</script>
 </body>
 </html>
