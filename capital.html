@@ -9,18 +9,49 @@
 <style>
 *{box-sizing:border-box;font-family:Inter,sans-serif}
 body{margin:0;background:#f7f7f7;color:#111}
-.wrapper{max-width:1100px;margin:0 auto;padding:70px 40px}
+.wrapper{max-width:1200px;margin:0 auto;padding:70px 40px}
 h1{font-size:2.4rem;font-weight:500}
 .sub{color:#666;margin-top:8px}
-.section{margin-top:50px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
-.card{
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
+
+.brief{
+background:#000;
+color:#fff;
+padding:30px;
+border-radius:20px;
+margin-top:40px;
+box-shadow:0 30px 80px rgba(0,0,0,.25);
 }
-.card h3{font-weight:500;margin-bottom:10px}
+.brief h2{font-weight:500;margin-bottom:10px}
+.brief p{font-size:.95rem;line-height:1.6;color:#ddd}
+
+.section{
+margin-top:50px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px
+}
+.card{
+background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+.card h3{font-weight:500;margin-bottom:8px;font-size:1.05rem}
 .card p{font-size:.9rem;color:#555;line-height:1.5}
+
+.feed{
+margin-top:60px;
+}
+.feed h2{font-weight:500;margin-bottom:15px}
+.feed-item{
+background:#fff;
+padding:18px;
+border-radius:14px;
+margin-bottom:12px;
+box-shadow:0 10px 30px rgba(0,0,0,.06);
+font-size:.9rem;
+}
+
 .footer{text-align:center;margin-top:80px;font-size:.8rem;color:#777}
 .denied{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
 </style>
@@ -40,49 +71,66 @@ h1{font-size:2.4rem;font-weight:500}
     <h1>Capital</h1>
     <p class="sub">Wealth Intelligence & Asset Strategy Chamber</p>
 
+    <!-- ROYAL BRIEF -->
+    <div class="brief">
+      <h2>Royal Capital Brief</h2>
+      <p>
+        Liquidity is shifting globally as interest rate regimes begin to stabilise.
+        Institutional capital is rotating from speculative assets into cash-flow
+        generating instruments and strategic commodities.  
+        The next decade will reward those positioned in real assets, infrastructure,
+        energy transition, and asymmetric technology platforms.
+      </p>
+    </div>
+
+    <!-- STRATEGIC MODULES -->
     <div class="section">
       <div class="card">
         <h3>Market Cycles</h3>
-        <p>Understand liquidity waves, boom-bust patterns, and how elite money positions before public moves.</p>
+        <p>Liquidity waves, credit contractions, and how elite capital front-runs macro turns.</p>
       </div>
-
       <div class="card">
         <h3>Asset Classes</h3>
-        <p>Private equity, real estate, commodities, crypto, bonds — how dynasties diversify across regimes.</p>
+        <p>Private equity, real estate, commodities, crypto, bonds — regime based allocation.</p>
       </div>
-
       <div class="card">
         <h3>Capital Allocation</h3>
-        <p>Frameworks for deploying capital with asymmetric risk-reward and long-term compounding.</p>
+        <p>Frameworks used by sovereign funds and family offices to compound generational wealth.</p>
       </div>
     </div>
 
     <div class="section">
       <div class="card">
         <h3>Institutional Thinking</h3>
-        <p>How hedge funds, sovereign funds and family offices structure portfolios and risk.</p>
+        <p>How hedge funds, sovereign funds and endowments structure risk.</p>
       </div>
-
       <div class="card">
         <h3>Economic Signals</h3>
-        <p>Rates, inflation, currency wars, debt cycles — reading the macro battlefield.</p>
+        <p>Rates, inflation, currency wars, debt cycles — early warning systems.</p>
       </div>
-
       <div class="card">
         <h3>Wealth Preservation</h3>
-        <p>Legal structures, trusts, jurisdictions, and legacy asset protection strategies.</p>
+        <p>Trusts, jurisdictions, asset protection and dynasty continuity.</p>
       </div>
     </div>
 
+    <!-- LIVE FEED PLACEHOLDER -->
+    <div class="feed">
+      <h2>Live Market Intelligence</h2>
+      <div class="feed-item">• Global bond yields stabilise as central banks signal policy pause.</div>
+      <div class="feed-item">• Energy and infrastructure attract record institutional inflows.</div>
+      <div class="feed-item">• Emerging markets see capital rotation amid dollar cycle shift.</div>
+      <div class="feed-item">• Private credit outpaces traditional banking in deal flow.</div>
+    </div>
+
     <div class="footer">
-      © 2026 The Royals Club — Capital Hall
+      © 2026 The Royals Club — Capital Intelligence Division
     </div>
   </div>
 </div>
 
 <script>
 const tier = (localStorage.getItem("memberTier") || "").toUpperCase();
-
 if(tier === "CORE" || tier === "PRIME" || tier === "ELITE"){
   document.getElementById("capitalContent").style.display = "block";
 } else {
