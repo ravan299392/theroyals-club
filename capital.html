@@ -14,42 +14,22 @@ h1{font-size:2.4rem;font-weight:500}
 .sub{color:#666;margin-top:8px}
 
 .brief{
-background:#000;
-color:#fff;
-padding:30px;
-border-radius:20px;
-margin-top:40px;
+background:#000;color:#fff;padding:30px;border-radius:20px;margin-top:40px;
 box-shadow:0 30px 80px rgba(0,0,0,.25);
 }
 .brief h2{font-weight:500;margin-bottom:10px}
 .brief p{font-size:.95rem;line-height:1.6;color:#ddd}
 
-.section{
-margin-top:50px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:30px
-}
-.card{
-background:#fff;
-padding:25px;
-border-radius:18px;
-box-shadow:0 20px 60px rgba(0,0,0,.08);
-}
+.section{margin-top:50px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.card{background:#fff;padding:25px;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.08)}
 .card h3{font-weight:500;margin-bottom:8px;font-size:1.05rem}
 .card p{font-size:.9rem;color:#555;line-height:1.5}
 
-.feed{
-margin-top:60px;
-}
+.feed{margin-top:60px}
 .feed h2{font-weight:500;margin-bottom:15px}
 .feed-item{
-background:#fff;
-padding:18px;
-border-radius:14px;
-margin-bottom:12px;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-font-size:.9rem;
+background:#fff;padding:18px;border-radius:14px;margin-bottom:12px;
+box-shadow:0 10px 30px rgba(0,0,0,.06);font-size:.9rem
 }
 
 .footer{text-align:center;margin-top:80px;font-size:.8rem;color:#777}
@@ -71,61 +51,32 @@ font-size:.9rem;
     <h1>Capital</h1>
     <p class="sub">Wealth Intelligence & Asset Strategy Chamber</p>
 
-    <!-- ROYAL BRIEF -->
     <div class="brief">
       <h2>Royal Capital Brief</h2>
-      <p>
-        Liquidity is shifting globally as interest rate regimes begin to stabilise.
-        Institutional capital is rotating from speculative assets into cash-flow
-        generating instruments and strategic commodities.  
-        The next decade will reward those positioned in real assets, infrastructure,
-        energy transition, and asymmetric technology platforms.
+      <p id="royalBrief">
+        Liquidity is rotating globally. Institutional capital is positioning in real assets,
+        infrastructure, strategic commodities and long-duration compounding vehicles.
       </p>
     </div>
 
-    <!-- STRATEGIC MODULES -->
     <div class="section">
-      <div class="card">
-        <h3>Market Cycles</h3>
-        <p>Liquidity waves, credit contractions, and how elite capital front-runs macro turns.</p>
-      </div>
-      <div class="card">
-        <h3>Asset Classes</h3>
-        <p>Private equity, real estate, commodities, crypto, bonds — regime based allocation.</p>
-      </div>
-      <div class="card">
-        <h3>Capital Allocation</h3>
-        <p>Frameworks used by sovereign funds and family offices to compound generational wealth.</p>
-      </div>
+      <div class="card"><h3>Market Cycles</h3><p>Liquidity waves, credit contractions, macro turns.</p></div>
+      <div class="card"><h3>Asset Classes</h3><p>Equity, debt, real estate, commodities, crypto, private markets.</p></div>
+      <div class="card"><h3>Capital Allocation</h3><p>Family office and sovereign fund deployment frameworks.</p></div>
     </div>
 
     <div class="section">
-      <div class="card">
-        <h3>Institutional Thinking</h3>
-        <p>How hedge funds, sovereign funds and endowments structure risk.</p>
-      </div>
-      <div class="card">
-        <h3>Economic Signals</h3>
-        <p>Rates, inflation, currency wars, debt cycles — early warning systems.</p>
-      </div>
-      <div class="card">
-        <h3>Wealth Preservation</h3>
-        <p>Trusts, jurisdictions, asset protection and dynasty continuity.</p>
-      </div>
+      <div class="card"><h3>Institutional Thinking</h3><p>How hedge funds & central banks structure risk.</p></div>
+      <div class="card"><h3>Economic Signals</h3><p>Rates, inflation, currencies, global debt cycles.</p></div>
+      <div class="card"><h3>Wealth Preservation</h3><p>Trusts, jurisdictions, dynasty continuity.</p></div>
     </div>
 
-    <!-- LIVE FEED PLACEHOLDER -->
     <div class="feed">
       <h2>Live Market Intelligence</h2>
-      <div class="feed-item">• Global bond yields stabilise as central banks signal policy pause.</div>
-      <div class="feed-item">• Energy and infrastructure attract record institutional inflows.</div>
-      <div class="feed-item">• Emerging markets see capital rotation amid dollar cycle shift.</div>
-      <div class="feed-item">• Private credit outpaces traditional banking in deal flow.</div>
+      <div id="newsFeed"></div>
     </div>
 
-    <div class="footer">
-      © 2026 The Royals Club — Capital Intelligence Division
-    </div>
+    <div class="footer">© 2026 The Royals Club — Capital Intelligence Division</div>
   </div>
 </div>
 
@@ -133,9 +84,29 @@ font-size:.9rem;
 const tier = (localStorage.getItem("memberTier") || "").toUpperCase();
 if(tier === "CORE" || tier === "PRIME" || tier === "ELITE"){
   document.getElementById("capitalContent").style.display = "block";
+  loadNews();
 } else {
   document.getElementById("accessDenied").style.display = "flex";
 }
+
+// Hybrid RSS Feed (Reuters Finance)
+async function loadNews(){
+  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.reuters.com/reuters/businessNews";
+  const res = await fetch(url);
+  const data = await res.json();
+  const feed = document.getElementById("newsFeed");
+  feed.innerHTML = "";
+
+  data.items.slice(0,6).forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "feed-item";
+    div.innerHTML = "• " + item.title;
+    feed.appendChild(div);
+  });
+}
+
+// Auto refresh every 1 hour
+setInterval(loadNews, 3600000);
 </script>
 
 </body>
