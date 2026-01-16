@@ -187,16 +187,7 @@ form.addEventListener("submit", function(e){
   });
 });
 
-// Auto member return
-window.onload=function(){
-  const code=localStorage.getItem("inviteCode");
-  const tier=localStorage.getItem("memberTier");
-  if(code&&tier){
-    if(confirm("Welcome back.\nContinue as "+tier+" member?")){
-      window.location.href="dashboard.html";
-    }
-  }
-}
+
 </script>
 
 </body>
