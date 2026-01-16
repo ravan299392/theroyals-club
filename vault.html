@@ -36,7 +36,7 @@ body{margin:0;background:#f7f7f7;color:#111;display:flex;height:100vh}
 .section.active{display:block}
 
 .card{background:#fff;border-radius:14px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,.05);margin-bottom:20px}
-input,select,button{padding:8px 12px;margin-top:6px}
+input,button{padding:8px 12px;margin-top:6px}
 button{cursor:pointer}
 
 /* Admin Lock */
@@ -76,28 +76,19 @@ button{cursor:pointer}
 
   <!-- Codes -->
   <div class="section active" id="codes">
-    <h3>Membership Codes</h3>
+    <h3>Invite Codes</h3>
     <div class="card">
-      <select id="tier">
-        <option value="CORE">Core</option>
-        <option value="PRIME">Prime</option>
-        <option value="ELITE">Elite</option>
-      </select>
-      <button onclick="generateCode()">Generate Code</button>
+      <button onclick="generateCode()">Generate Invite Code</button>
       <p id="generatedCode"></p>
     </div>
     <div class="card" id="codeList"></div>
   </div>
 
-  <!-- Members -->
   <div class="section" id="members">
     <h3>Members Control</h3>
-    <div class="card">
-      <p>Search by code, upgrade, revoke (same as Codes section for now)</p>
-    </div>
+    <div class="card">Coming Soon</div>
   </div>
 
-  <!-- Content -->
   <div class="section" id="content">
     <h3>Content Control</h3>
     <div class="card">
@@ -106,7 +97,6 @@ button{cursor:pointer}
     </div>
   </div>
 
-  <!-- Announcements -->
   <div class="section" id="announcements">
     <h3>Global Announcement</h3>
     <div class="card">
@@ -115,12 +105,9 @@ button{cursor:pointer}
     </div>
   </div>
 
-  <!-- Settings -->
   <div class="section" id="settings">
     <h3>Settings</h3>
-    <div class="card">
-      <p>Admin Key, Maintenance Mode, Payment Setup (coming soon)</p>
-    </div>
+    <div class="card">Coming Soon</div>
   </div>
 
 </div>
@@ -144,15 +131,19 @@ function show(id){
   event.target.classList.add('active');
 }
 
-/* Membership DB */
+/* Invite Code DB */
 let db = JSON.parse(localStorage.getItem("royalDB") || "{}");
 
 function generateCode(){
-  const tier = document.getElementById("tier").value;
-  const code = tier + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
-  db[code] = { tier, status:"ACTIVE" };
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "ROYAL-";
+  for(let i=0;i<10;i++){
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  db[code] = { status:"ACTIVE" };
   localStorage.setItem("royalDB", JSON.stringify(db));
-  document.getElementById("generatedCode").innerText = "New Code: " + code;
+  document.getElementById("generatedCode").innerText = "New Invite Code: " + code;
   renderCodes();
 }
 
@@ -162,20 +153,11 @@ function revoke(code){
   renderCodes();
 }
 
-function upgrade(code,tier){
-  db[code].tier = tier;
-  localStorage.setItem("royalDB", JSON.stringify(db));
-  renderCodes();
-}
-
 function renderCodes(){
-  let html = "<h4>All Codes</h4>";
+  let html = "<h4>All Invite Codes</h4>";
   for(let c in db){
     html += `
-      <p><b>${c}</b> → ${db[c].tier} (${db[c].status})
-      <button onclick="upgrade('${c}','CORE')">Core</button>
-      <button onclick="upgrade('${c}','PRIME')">Prime</button>
-      <button onclick="upgrade('${c}','ELITE')">Elite</button>
+      <p><b>${c}</b> → ${db[c].status}
       <button onclick="revoke('${c}')">Revoke</button></p>
     `;
   }
@@ -183,13 +165,11 @@ function renderCodes(){
 }
 renderCodes();
 
-/* Content Control */
 function saveContent(){
   localStorage.setItem("capitalContent", document.getElementById("capitalText").value);
   alert("Capital content saved.");
 }
 
-/* Announcement */
 function pushNotice(){
   localStorage.setItem("globalNotice", document.getElementById("notice").value);
   alert("Announcement pushed to dashboard.");
