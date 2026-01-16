@@ -92,7 +92,7 @@ function verifyCode(){
   if(db[input] && db[input].status === "ACTIVE"){
     localStorage.setItem("memberTier", db[input].tier);
     localStorage.setItem("inviteCode", input);
-    window.location.href = "membership.html";
+    window.location.href = "dashboard.html";
   } else {
     document.getElementById("error").innerText = "Access Denied. Invalid or Revoked Code.";
     document.getElementById("error").style.display = "block";
