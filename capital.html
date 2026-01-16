@@ -34,6 +34,8 @@ box-shadow:0 10px 30px rgba(0,0,0,.06);font-size:.9rem
 
 .footer{text-align:center;margin-top:80px;font-size:.8rem;color:#777}
 .denied{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
+a{color:#000;text-decoration:none}
+a:hover{text-decoration:underline}
 </style>
 </head>
 
@@ -73,7 +75,7 @@ box-shadow:0 10px 30px rgba(0,0,0,.06);font-size:.9rem
 
     <div class="feed">
       <h2>Live Market Intelligence</h2>
-      <div id="newsFeed"></div>
+      <div id="newsFeed">Loading latest market intelligence...</div>
     </div>
 
     <div class="footer">© 2026 The Royals Club — Capital Intelligence Division</div>
@@ -82,6 +84,7 @@ box-shadow:0 10px 30px rgba(0,0,0,.06);font-size:.9rem
 
 <script>
 const tier = (localStorage.getItem("memberTier") || "").toUpperCase();
+
 if(tier === "CORE" || tier === "PRIME" || tier === "ELITE"){
   document.getElementById("capitalContent").style.display = "block";
   loadNews();
@@ -89,23 +92,43 @@ if(tier === "CORE" || tier === "PRIME" || tier === "ELITE"){
   document.getElementById("accessDenied").style.display = "flex";
 }
 
-// Hybrid RSS Feed (Reuters Finance)
 async function loadNews(){
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.reuters.com/reuters/businessNews";
-  const res = await fetch(url);
-  const data = await res.json();
-  const feed = document.getElementById("newsFeed");
-  feed.innerHTML = "";
+  const feedUrls = [
+    "http://feeds.reuters.com/reuters/marketsNews",
+    "http://feeds.reuters.com/reuters/businessNews",
+    "http://feeds.reuters.com/news/wealth"
+  ];
 
-  data.items.slice(0,6).forEach(item=>{
+  const feedContainer = document.getElementById("newsFeed");
+  feedContainer.innerHTML = "Loading latest market intelligence...";
+
+  let allItems = [];
+
+  for (const url of feedUrls) {
+    try {
+      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if(data.items) allItems.push(...data.items);
+    } catch (e) {
+      console.warn("Feed failed:", url);
+    }
+  }
+
+  allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+  feedContainer.innerHTML = "";
+  allItems.slice(0, 8).forEach(item => {
     const div = document.createElement("div");
     div.className = "feed-item";
-    div.innerHTML = "• " + item.title;
-    feed.appendChild(div);
+    div.innerHTML = `• <a href="${item.link}" target="_blank">${item.title}</a>`;
+    feedContainer.appendChild(div);
   });
+
+  if(allItems.length === 0) {
+    feedContainer.innerHTML = "No market updates available right now.";
+  }
 }
 
-// Auto refresh every 1 hour
 setInterval(loadNews, 3600000);
 </script>
 
