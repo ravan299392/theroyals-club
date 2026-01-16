@@ -52,8 +52,9 @@ h1{font-weight:500;font-size:2.2rem}
 </div>
 
 <script>
-const tier = localStorage.getItem("memberTier");
-if(tier === "Core" || tier === "Prime" || tier === "Elite"){
+const tier = (localStorage.getItem("memberTier") || "").toUpperCase();
+
+if(tier === "CORE" || tier === "PRIME" || tier === "ELITE"){
   document.getElementById("coreContent").style.display = "block";
   document.getElementById("tierBadge").innerText = "Tier: " + tier;
 } else {
